@@ -1,16 +1,20 @@
-import React from 'react';
+import React from "react";
+import Header from "./Header";
 
 class Trash extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return(
-            <h1>Hello from Trash</h1>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <h1>Hello from Trash</h1>
+      </div>
+    );
+  }
 }
 
 export default Trash;

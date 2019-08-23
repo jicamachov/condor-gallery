@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from './Image'
+import Header from './Header';
 
 class Home extends React.Component {
 
@@ -36,11 +37,14 @@ class Home extends React.Component {
     }
 
     render() {
-        const element = this.state.photos.map(record => <Image caption={record.caption} path={'http://127.0.0.1:4100/' + record.path} />)
+        const element = this.state.photos.map(record => <Image key={record._id} caption={record.caption} path={'http://127.0.0.1:4100/' + record.path} />)
         return (
             <div>
+            <div className="pure-g">
                 {element}
             </div>
+            </div>
+           
         );
     }
 }
