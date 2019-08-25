@@ -1,8 +1,58 @@
 import React from "react";
 
 import SettingsOverscanIcon from '@material-ui/icons/SettingsOverscan';
+import { withStyles } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteIcon from '@material-ui/icons/Delete';
+import PhotoAlbumIcon from '@material-ui/icons/PhotoAlbum';
+
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})(props => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+
+const StyledMenuItem = withStyles(theme => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
 
 const Image = (props) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  function handleClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
+  
   return (
     <div
       className="demo-card-image mdl-card mdl-shadow--2dp m-10"
@@ -13,28 +63,42 @@ const Image = (props) => {
       }}
     >
       <div className="mdl-card__title mdl-card--expand"></div>
-      <div className="p-top">
-      <button
-          className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
-          id={props.id}
+      <div className="p-top p-rigth">
+       <MoreVertIcon
+       fontSize="large"
+        aria-controls="customized-menu"
+        aria-haspopup="true"
+        variant="contained"
+        color="primary"
+        onClick={handleClick}
+       />
+      <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <StyledMenuItem
+         onClick={ () => props.remove(props.albumid, props.id)} 
+         data-photoid={props.id}
+         data-albumid={props.albumid}
         >
-          <i className="material-icons">more_vert</i>
-        </button>
-        <ul
-          className="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-left"
-          htmlFor={props.id}
-        >
-          <li className="mdl-menu__item"  onClick={props.remove} data-photoid={props.id} data-albumid={props.idAlbum}> 
-            Delete
-          </li>
-          <li className="mdl-menu__item image-upload center">
-            <label htmlFor="load-file"> 
-              Load
-             </label>
-            <input type="file" name="selectedFile" id="load-file" />
-          </li>
-        </ul>
-      </div>
+          <ListItemIcon>
+            <DeleteIcon />
+          </ListItemIcon>
+          <ListItemText 
+            primary="Delete"
+            />
+        </StyledMenuItem>
+        <StyledMenuItem>
+          <ListItemIcon>
+            <PhotoAlbumIcon />
+          </ListItemIcon>
+          <ListItemText primary="Album" />
+        </StyledMenuItem>
+      </StyledMenu>
+    </div>
       <div className="mdl-card__actions image-bottom" >
         <span className="demo-card-image__filename">{props.caption}</span>
         <SettingsOverscanIcon 

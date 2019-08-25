@@ -14,7 +14,7 @@ const Home = (props) => {
                 <Image 
                     open={props.openImage} 
                     id={photo._id}  
-                    idAlbum={photo.albumid} 
+                    albumid={photo.albumid} 
                     remove={props.remove} 
                     caption={photo.caption} 
                     path={'http://127.0.0.1:4100/' + photo.path} 

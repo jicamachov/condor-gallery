@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
+import AlbumData from './data/album-data';
+
 import Routes from "./routes/Routes";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
@@ -34,7 +36,6 @@ class App extends React.Component {
     this.handleUploadPhoto = this.handleUploadPhoto.bind(this);
     this.handleConfimClose = this.handleConfimClose.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleReduce = this.handleReduce.bind(this);
     this.handleGroupPhotosByDateUpLoad = this.handleGroupPhotosByDateUpLoad.bind(this);
     this.handleRemovePhoto = this.handleRemovePhoto.bind(this);
     this.handleCancelRemovePotho = this.handleCancelRemovePotho.bind(this);
@@ -71,14 +72,7 @@ class App extends React.Component {
   }
 
   handleLoadPhotos() {
-    const headers = new Headers();
-    const header = {
-      method: 'GET',
-      headers,
-      mode: 'cors',
-      cache: 'default'
-    }
-    fetch('http://127.0.0.1:4100/', header)
+    AlbumData.loadAlbums()
       .then((res) => res.json())
       .then((record) => {
         this.setState({ albums: record.data });
@@ -94,15 +88,8 @@ class App extends React.Component {
     fd.append("photo", this.state.selectedFile, this.state.selectedFile.name);
     const caption = this.state.namePhoto || this.state.selectedFile.name;
     fd.append("caption", caption);
-    const headers = new Headers({ enctype: 'multipart/form-data' });
-    const header = {
-      method: 'POST',
-      headers,
-      body: fd,
-      mode: 'cors',
-      cache: 'default'
-    }
-    fetch("http://127.0.0.1:4100/add-photo", header)
+    AlbumData
+      .uploadPhoto(fd)
       .then(res => res.json())
       .then(record => {
         const albums = this.state.albums;
@@ -115,21 +102,14 @@ class App extends React.Component {
       });
   }
 
-  handleRemovePhoto(e) {
+  handleRemovePhoto(albumid, photoid) {
     if (this.state.showConfirmRemovePhoto === true) {
       this.setState({ showConfirmRemovePhoto: false });
 
       const albumid = this.state.idAlbumToRemove;
-      const photoId = this.state.idPhotoToRemove;
-      const headers = new Headers();
-      const header = {
-        method: 'DELETE',
-        headers,
-        mode: 'cors',
-        cache: 'default'
-      }
-
-      fetch(`http://127.0.0.1:4100/delete/${albumid}/${photoId}`, header)
+      const photoid = this.state.idPhotoToRemove;
+      AlbumData
+        .deletePhoto(albumid, photoid)
         .then(res => res.json())
         .then(record => {
           const albums = this.state.albums;
@@ -142,22 +122,18 @@ class App extends React.Component {
         });
 
     } else {
-      const dataset = e.target.dataset;
-      console.log('Remove', dataset.photoid, dataset.albumid);
-      this.setState({
-        idPhotoToRemove: dataset.photoid,
-        idAlbumToRemove: dataset.albumid,
-        showConfirmRemovePhoto: true
-      });
+      console.log('Remove', photoid, albumid);
+       this.setState({
+         idPhotoToRemove: photoid,
+         idAlbumToRemove: albumid,
+         showConfirmRemovePhoto: true
+       });
     }
   }
 
   handleCancelRemovePotho() {
     this.setState({ showConfirmRemovePhoto: false });
   }
-
-  handleReduce = (a, b) => a.filter(aa => !b.find(bb => aa['_id'] === bb['_id'])).concat(b); // a = Array 1, b = Array 2, p = property to compare
-
 
   handleGroupPhotosByDateUpLoad(albums) {
     const data = [];
@@ -185,11 +161,11 @@ class App extends React.Component {
   }
 
   handleOnDataSearch(filter, albums) {
-    if(filter === '' || albums.length === 0) return [];
+    if (filter === '' || albums.length === 0) return [];
     let data = [];
     const regex = new RegExp(filter, 'i');
     albums.map(album => {
-       return  data = album.photos.filter(q => (regex.test(q.caption) || regex.test(new Date(q.createdt).toLocaleDateString() )));
+      return data = album.photos.filter(q => (regex.test(q.caption) || regex.test(new Date(q.createdt).toLocaleDateString())));
     });
     return data;
   }
@@ -198,66 +174,70 @@ class App extends React.Component {
   handleOnShowModal(e) {
     const dataset = e.target.dataset;
 
-    this.setState({imgShow: {
-      show: true,
-      id: dataset.imgid,
-      path: dataset.imgpath,
-      caption: dataset.imgcaption
-    }})
+    this.setState({
+      imgShow: {
+        show: true,
+        id: dataset.imgid,
+        path: dataset.imgpath,
+        caption: dataset.imgcaption
+      }
+    })
   }
 
   hanldeOnHiddenModal() {
-    this.setState({imgShow: {
-      show: false,
-      id: null,
-      path: null,
-      caption: null
-    }})
+    this.setState({
+      imgShow: {
+        show: false,
+        id: null,
+        path: null,
+        caption: null
+      }
+    })
   }
 
   render() {
-      return (
-        <Router>
-          <div className="demo-layout mdl-layout mdl-js-layout  mdl-layout--fixed-header">
-            <Header
-              title={this.state.title}
-              selectedPhoto={this.handleInputChange}
-              search={this.handleOnSearch}
+    return (
+      <Router>
+        <div className="demo-layout mdl-layout mdl-js-layout  mdl-layout--fixed-header">
+          <Header
+            title={this.state.title}
+            selectedPhoto={this.handleInputChange}
+            search={this.handleOnSearch}
+          />
+          <Sidebar onChangeTitle={this.handleOnChangeTitle} />
+          <main className="mdl-layout__content mdl-color--grey-100">
+            <Routes
+              data={this.handleGroupPhotosByDateUpLoad(this.state.albums)}
+              dataSearch={this.handleOnDataSearch(this.state.inputSearch, this.state.albums)}
+              removePhoto={this.handleRemovePhoto}
+              openImage={this.handleOnShowModal}
             />
-            <Sidebar onChangeTitle={this.handleOnChangeTitle} />
-            <main className="mdl-layout__content mdl-color--grey-100">
-              <Routes
-                data={this.handleGroupPhotosByDateUpLoad(this.state.albums)}
-                dataSearch={this.handleOnDataSearch(this.state.inputSearch, this.state.albums)}
-                removePhoto={this.handleRemovePhoto}
-                openImage={this.handleOnShowModal}
-              />
-              <DraggableDialog
-                showConfirm={this.state.showConfirm}
-                confimClose={this.handleConfimClose}
-                confirmAccept={this.handleUploadPhoto}
-                inputChange={this.handleInputChange}
-                title="Name photo"
-                option="input"
-                nameButtom="Upload"
-              />
-              <DraggableDialog
-                showConfirm={this.state.showConfirmRemovePhoto}
-                confimClose={this.handleCancelRemovePotho}
-                confirmAccept={this.handleRemovePhoto}
-                title="Confimación"
-                message="¿Desea Eliminar la imagen?"
-                option="text"
-                nameButtom="Accept"
-              />
-              <Modal 
-                img={this.state.imgShow}
-                close={this.hanldeOnHiddenModal}
-              />
-            </main>
-          </div>
-        </Router>
-      );
+            <DraggableDialog
+              showConfirm={this.state.showConfirm}
+              confimClose={this.handleConfimClose}
+              confirmAccept={this.handleUploadPhoto}
+              inputChange={this.handleInputChange}
+              title="Name photo"
+              option="input"
+              nameButtom="Upload"
+            />
+            <DraggableDialog
+              showConfirm={this.state.showConfirmRemovePhoto}
+              confimClose={this.handleCancelRemovePotho}
+              confirmAccept={this.handleRemovePhoto}
+              title="Confimación"
+              message="¿Desea Eliminar la imagen?"
+              option="text"
+              nameButtom="Accept"
+            />
+            <Modal
+              img={this.state.imgShow}
+              close={this.hanldeOnHiddenModal}
+            />
+          </main>
+        </div>
+      </Router>
+    );
   }
 }
 
