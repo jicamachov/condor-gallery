@@ -30,7 +30,7 @@ const Menu = props => {
         onChangeTitle={props.onChangeTitle}
       />
       <Item
-        link="/album"
+        link="/albums"
         title="Album"
         icon="inbox"
         onChangeTitle={props.onChangeTitle}

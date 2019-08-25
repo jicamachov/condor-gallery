@@ -237,6 +237,11 @@ _:-ms-input-placeholder,
   bottom: 0px;
 }
 
+.p-top {
+  position: absolute;
+  top: 0px;
+}
+
 .image-upload > input {
   display: none;
 }

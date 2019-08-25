@@ -1,6 +1,21 @@
 import React from "react";
 
+import PublishIcon from '@material-ui/icons/Publish';
+import AddIcon from '@material-ui/icons/Add';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    color: theme.palette.text.primary,
+  },
+  icon: {
+    margin: theme.spacing(1),
+    fontSize: 16,
+  },
+}));
+
 const Header = props => {
+  const classes = useStyles();
   return (
     <header className="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
       <div className="mdl-layout__header-row">
@@ -30,11 +45,15 @@ const Header = props => {
           htmlFor="hdrbtn"
         >
           <li className="mdl-menu__item">
-          <i className="fa fa-plus" aria-hidden="true"></i>Create
+          <AddIcon className={classes.icon}/>
+            Create
           </li>
           <li className="mdl-menu__item image-upload center">
-            <label htmlFor="load-file"> <i className="fa fa-upload" aria-hidden="true"></i> Load</label>
-            <input type="file" id="load-file" onChange={props.selectedPhoto} />
+            <label htmlFor="load-file"> 
+              <PublishIcon className={classes.icon}/>
+              Load
+             </label>
+            <input type="file" name="selectedFile" id="load-file" onChange={props.selectedPhoto} />
           </li>
         </ul>
       </div>
