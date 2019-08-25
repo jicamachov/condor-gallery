@@ -1,5 +1,7 @@
 import React from "react";
 
+import SettingsOverscanIcon from '@material-ui/icons/SettingsOverscan';
+
 const Image = (props) => {
   return (
     <div
@@ -9,8 +11,6 @@ const Image = (props) => {
         backgroundSize: "cover",
         backgroundPosition: "center center"
       }}
-
-      onClick={props.open}
     >
       <div className="mdl-card__title mdl-card--expand"></div>
       <div className="p-top">
@@ -24,7 +24,7 @@ const Image = (props) => {
           className="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-left"
           htmlFor={props.id}
         >
-          <li className="mdl-menu__item"  onClick={props.remove} id={props.id}> 
+          <li className="mdl-menu__item"  onClick={props.remove} data-photoid={props.id} data-albumid={props.idAlbum}> 
             Delete
           </li>
           <li className="mdl-menu__item image-upload center">
@@ -37,6 +37,15 @@ const Image = (props) => {
       </div>
       <div className="mdl-card__actions image-bottom" >
         <span className="demo-card-image__filename">{props.caption}</span>
+        <SettingsOverscanIcon 
+          className="p-rigth mr-10" 
+          fontSize="large"
+          onClick={props.open}
+          id={props.id}
+          data-imgid={props.id}
+          data-imgpath={props.path}
+          data-imgcaption={props.caption}
+          />
       </div>
     </div>
   );

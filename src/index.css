@@ -232,6 +232,10 @@ _:-ms-input-placeholder,
   margin: 10px;
 }
 
+.mr-10 {
+  margin-right: 10px;
+}
+
 .image-bottom {
   position: absolute;
   bottom: 0px;
@@ -242,6 +246,16 @@ _:-ms-input-placeholder,
   top: 0px;
 }
 
+.p-rigth {
+  position: absolute;
+  right: 0;
+}
+
 .image-upload > input {
   display: none;
+}
+
+
+.mdl-layout__header {
+  z-index: 1 !important;
 }

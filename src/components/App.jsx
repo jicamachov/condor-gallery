@@ -5,6 +5,7 @@ import Routes from "./routes/Routes";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import DraggableDialog from "./DraggableDialog";
+import Modal from "./shared/modal/Modal";
 
 
 class App extends React.Component {
@@ -13,12 +14,20 @@ class App extends React.Component {
 
     this.state = {
       title: "Home",
-      photos: [],
+      albums: [],
       showConfirm: false,
       showConfirmRemovePhoto: false,
       selectedFile: null,
       namePhoto: null,
-      idToRemove: null
+      idPhotoToRemove: null,
+      idAlbumToRemove: null,
+      inputSearch: null,
+      imgShow: {
+        show: false,
+        id: null,
+        path: null,
+        caption: null
+      }
     };
 
     this.handleOnChangeTitle = this.handleOnChangeTitle.bind(this);
@@ -29,9 +38,13 @@ class App extends React.Component {
     this.handleGroupPhotosByDateUpLoad = this.handleGroupPhotosByDateUpLoad.bind(this);
     this.handleRemovePhoto = this.handleRemovePhoto.bind(this);
     this.handleCancelRemovePotho = this.handleCancelRemovePotho.bind(this);
+    this.handleOnSearch = this.handleOnSearch.bind(this);
+    this.handleOnDataSearch = this.handleOnDataSearch.bind(this);
+    this.handleOnShowModal = this.handleOnShowModal.bind(this);
+    this.hanldeOnHiddenModal = this.hanldeOnHiddenModal.bind(this);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.handleLoadPhotos();
   }
 
@@ -68,12 +81,7 @@ class App extends React.Component {
     fetch('http://127.0.0.1:4100/', header)
       .then((res) => res.json())
       .then((record) => {
-        console.log('Data Traida', record.data);
-        record.data.forEach(albums => {
-          console.log(albums.photos);
-          const data = albums.photos;
-          this.setState({ photos: data });
-        });
+        this.setState({ albums: record.data });
       })
       .catch(err => {
         console.log('Error: ', err)
@@ -97,8 +105,10 @@ class App extends React.Component {
     fetch("http://127.0.0.1:4100/add-photo", header)
       .then(res => res.json())
       .then(record => {
-        const data = this.handleReduce(record.data.photos, this.state.photos);
-        this.setState({ photos: data });
+        const albums = this.state.albums;
+        const index = albums.findIndex((e) => e._id === record.data._id);
+        albums[index] = record.data;
+        this.setState({ albums });
       })
       .catch(err => {
         console.log("Error: ", err);
@@ -107,96 +117,147 @@ class App extends React.Component {
 
   handleRemovePhoto(e) {
     if (this.state.showConfirmRemovePhoto === true) {
-      this.setState({showConfirmRemovePhoto: false});
+      this.setState({ showConfirmRemovePhoto: false });
 
-      const albumid = '5d61f33445a4df40c8d6b0f8';
-      const photoId = this.state.idToRemove;
-
+      const albumid = this.state.idAlbumToRemove;
+      const photoId = this.state.idPhotoToRemove;
       const headers = new Headers();
       const header = {
         method: 'DELETE',
         headers,
         mode: 'cors',
-        cache: 'default' 
+        cache: 'default'
       }
 
       fetch(`http://127.0.0.1:4100/delete/${albumid}/${photoId}`, header)
         .then(res => res.json())
         .then(record => {
-          console.log('Delete', record.data);
-          const data = this.handleReduce(record.data.photos, this.state.photos);
-          this.setState({ photos: data });
-         // const data = this.handleReduce(record.data.photos, this.state.photos);
-         // this.setState({ photos: data });
+          const albums = this.state.albums;
+          const index = albums.findIndex((e) => e._id === record.data._id);
+          albums[index] = record.data;
+          this.setState({ albums });
         })
         .catch(err => {
           console.log("Error: ", err);
         });
 
     } else {
-      console.log('Remove', e.target.id);
-      this.setState({idToRemove: e.target.id, showConfirmRemovePhoto: true});
+      const dataset = e.target.dataset;
+      console.log('Remove', dataset.photoid, dataset.albumid);
+      this.setState({
+        idPhotoToRemove: dataset.photoid,
+        idAlbumToRemove: dataset.albumid,
+        showConfirmRemovePhoto: true
+      });
     }
   }
 
   handleCancelRemovePotho() {
-    this.setState({showConfirmRemovePhoto: false});
+    this.setState({ showConfirmRemovePhoto: false });
   }
 
   handleReduce = (a, b) => a.filter(aa => !b.find(bb => aa['_id'] === bb['_id'])).concat(b); // a = Array 1, b = Array 2, p = property to compare
 
 
-  handleGroupPhotosByDateUpLoad(photos) {
+  handleGroupPhotosByDateUpLoad(albums) {
     const data = [];
-    photos.forEach(photo => {
-      const createdt = new Date(photo.createdt).toLocaleDateString();
-      const index = data.findIndex((e) => e.date === createdt );
-      if(index === -1) {
-        data.push({date: createdt, photos: [photo]});
-      } else {
-        data[index].photos.push(photo);
-      }
+
+    albums.forEach(album => {
+      album.photos.forEach(photo => {
+        photo.albumid = album._id;
+        const createdt = new Date(photo.createdt).toLocaleDateString();
+        const index = data.findIndex((e) => e.date === createdt);
+        if (index === -1) {
+          data.push({ date: createdt, photos: [photo] });
+        } else {
+          data[index].photos.push(photo);
+        }
+      });
+    });
+
+    return data;
+  }
+
+
+  handleOnSearch(e) {
+    const target = e.target;
+    this.setState({ inputSearch: target.value });
+  }
+
+  handleOnDataSearch(filter, albums) {
+    if(filter === '' || albums.length === 0) return [];
+    let data = [];
+    const regex = new RegExp(filter, 'i');
+    albums.map(album => {
+       return  data = album.photos.filter(q => (regex.test(q.caption) || regex.test(new Date(q.createdt).toLocaleDateString() )));
     });
     return data;
   }
 
+
+  handleOnShowModal(e) {
+    const dataset = e.target.dataset;
+
+    this.setState({imgShow: {
+      show: true,
+      id: dataset.imgid,
+      path: dataset.imgpath,
+      caption: dataset.imgcaption
+    }})
+  }
+
+  hanldeOnHiddenModal() {
+    this.setState({imgShow: {
+      show: false,
+      id: null,
+      path: null,
+      caption: null
+    }})
+  }
+
   render() {
-    console.log('Data send', this.state.photos);
-    return (
-      <Router>
-        <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-          <Header
-            title={this.state.title}
-            selectedPhoto={this.handleInputChange}
-          />
-          <Sidebar onChangeTitle={this.handleOnChangeTitle} />
-          <main className="mdl-layout__content mdl-color--grey-100">
-            <Routes 
-              data={this.handleGroupPhotosByDateUpLoad(this.state.photos)} 
-              removePhoto={this.handleRemovePhoto}
+      return (
+        <Router>
+          <div className="demo-layout mdl-layout mdl-js-layout  mdl-layout--fixed-header">
+            <Header
+              title={this.state.title}
+              selectedPhoto={this.handleInputChange}
+              search={this.handleOnSearch}
+            />
+            <Sidebar onChangeTitle={this.handleOnChangeTitle} />
+            <main className="mdl-layout__content mdl-color--grey-100">
+              <Routes
+                data={this.handleGroupPhotosByDateUpLoad(this.state.albums)}
+                dataSearch={this.handleOnDataSearch(this.state.inputSearch, this.state.albums)}
+                removePhoto={this.handleRemovePhoto}
+                openImage={this.handleOnShowModal}
               />
-            <DraggableDialog
-              showConfirm={this.state.showConfirm}
-              confimClose={this.handleConfimClose}
-              confirmAccept={this.handleUploadPhoto}
-              inputChange={this.handleInputChange}
-              title="Name photo"
-              option="input"
-              nameButtom="Upload"
-            />
-            <DraggableDialog
-              showConfirm={this.state.showConfirmRemovePhoto}
-              confimClose={this.handleCancelRemovePotho}
-              confirmAccept={this.handleRemovePhoto}
-              title="Confimación"
-              message="¿Desea Eliminar la imagen?"
-              option="text"
-              nameButtom="Accept"
-            />
-          </main>
-        </div>
-      </Router>
-    );
+              <DraggableDialog
+                showConfirm={this.state.showConfirm}
+                confimClose={this.handleConfimClose}
+                confirmAccept={this.handleUploadPhoto}
+                inputChange={this.handleInputChange}
+                title="Name photo"
+                option="input"
+                nameButtom="Upload"
+              />
+              <DraggableDialog
+                showConfirm={this.state.showConfirmRemovePhoto}
+                confimClose={this.handleCancelRemovePotho}
+                confirmAccept={this.handleRemovePhoto}
+                title="Confimación"
+                message="¿Desea Eliminar la imagen?"
+                option="text"
+                nameButtom="Accept"
+              />
+              <Modal 
+                img={this.state.imgShow}
+                close={this.hanldeOnHiddenModal}
+              />
+            </main>
+          </div>
+        </Router>
+      );
   }
 }
 

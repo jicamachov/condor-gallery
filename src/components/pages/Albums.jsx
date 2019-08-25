@@ -26,7 +26,6 @@ class Albums extends React.Component {
       .then(res => res.json())
       .then(record => {
         this.setState({album: record.data});
-        console.log(record)
       })
       .catch(err => {
         console.log("Error: ", err);
