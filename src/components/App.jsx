@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
+import Snackbar from '@material-ui/core/Snackbar';
+
 import AlbumData from './data/album-data';
 
 import Routes from "./routes/Routes";
@@ -8,7 +10,6 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import DraggableDialog from "./DraggableDialog";
 import Modal from "./shared/modal/Modal";
-
 
 class App extends React.Component {
   constructor(props) {
@@ -43,6 +44,8 @@ class App extends React.Component {
     this.handleOnDataSearch = this.handleOnDataSearch.bind(this);
     this.handleOnShowModal = this.handleOnShowModal.bind(this);
     this.hanldeOnHiddenModal = this.hanldeOnHiddenModal.bind(this);
+    this.handleOnAddAlbum = this.handleOnAddAlbum.bind(this);
+    this.handleCloseNotification = this.handleCloseNotification.bind(this);
   }
 
   UNSAFE_componentWillMount() {
@@ -82,6 +85,23 @@ class App extends React.Component {
       })
   }
 
+  handleOnAddAlbum(values) {
+    console.log('add to server', values.name);
+
+    AlbumData
+      .saveAlbum(values)
+      .then(res => res.json())
+      .then(record => {
+        console.log(record)
+        const data = this.state.albums;
+        data.push(record.data);
+        this.setState({albums: data});
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
   handleUploadPhoto(e) {
     this.setState({ showConfirm: false });
     const fd = new FormData();
@@ -98,6 +118,7 @@ class App extends React.Component {
         this.setState({ albums });
       })
       .catch(err => {
+        this.setState({response: {show: true, message: `Error: ${err}`, color: 'red'} });
         console.log("Error: ", err);
       });
   }
@@ -123,11 +144,11 @@ class App extends React.Component {
 
     } else {
       console.log('Remove', photoid, albumid);
-       this.setState({
-         idPhotoToRemove: photoid,
-         idAlbumToRemove: albumid,
-         showConfirmRemovePhoto: true
-       });
+      this.setState({
+        idPhotoToRemove: photoid,
+        idAlbumToRemove: albumid,
+        showConfirmRemovePhoto: true
+      });
     }
   }
 
@@ -137,7 +158,7 @@ class App extends React.Component {
 
   handleGroupPhotosByDateUpLoad(albums) {
     const data = [];
-
+    albums = albums.filter(e => e.name === '__other');
     albums.forEach(album => {
       album.photos.forEach(photo => {
         photo.albumid = album._id;
@@ -161,6 +182,7 @@ class App extends React.Component {
   }
 
   handleOnDataSearch(filter, albums) {
+    console.log(albums)
     if (filter === '' || albums.length === 0) return [];
     let data = [];
     const regex = new RegExp(filter, 'i');
@@ -195,6 +217,11 @@ class App extends React.Component {
     })
   }
 
+  handleCloseNotification() {
+
+  }
+
+  // <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header"> // menu fixed
   render() {
     return (
       <Router>
@@ -209,8 +236,10 @@ class App extends React.Component {
             <Routes
               data={this.handleGroupPhotosByDateUpLoad(this.state.albums)}
               dataSearch={this.handleOnDataSearch(this.state.inputSearch, this.state.albums)}
+              dataAlbum={this.state.albums}
               removePhoto={this.handleRemovePhoto}
               openImage={this.handleOnShowModal}
+              addAlbum={this.handleOnAddAlbum}
             />
             <DraggableDialog
               showConfirm={this.state.showConfirm}

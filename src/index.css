@@ -259,3 +259,17 @@ _:-ms-input-placeholder,
 .mdl-layout__header {
   z-index: 1 !important;
 }
+
+/* .mdl-layout__drawer {
+  z-index: 1 !important;
+} */
+
+.center {
+  text-align: center;
+}
+
+.c-img {
+  display:block;
+margin:auto;
+
+}

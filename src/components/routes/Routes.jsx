@@ -3,20 +3,24 @@ import { Route } from "react-router-dom";
 
 import Home from "../pages/Home";
 import Albums from "../pages/Albums";
-import Trash from "../pages/Trash";
 import Search from "../pages/Search";
+import Album from "../pages/Album";
+import CreateAlbum from '../pages/CreateAlbum';
 
 
 const Routes = (props) => {
   const data = props.data;
-  const remove = props.removePhoto;
   const dataSearch = props.dataSearch;
+  const dataAlbum = props.dataAlbum;
+  const remove = props.removePhoto;
   const openImage = props.openImage;
+  const addAlbum = props.addAlbum;
   return (
     <div>
       <Route exact path="/" render={(props)=><Home {...props} data={data} remove={remove} openImage={openImage}/>} />
-      <Route path="/albums" component={Albums} />
-      <Route path="/trash" component={Trash} />
+      <Route path="/albums" render={ (props)=><Albums {...props} data={dataAlbum}/>} />
+      <Route path="/album/:id" render={ (props)=><Album {...props} data={dataAlbum} remove={remove} openImage={openImage} />} />
+      <Route path="/create-album" render={ (props)=><CreateAlbum {...props} data={data} openImage={openImage} addAlbum={addAlbum}/>} />
       <Route path="/search" render={(props)=><Search {...props} data={dataSearch} remove={remove}/>} />
     </div>
   );

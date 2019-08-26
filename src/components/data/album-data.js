@@ -1,3 +1,5 @@
+import Album from "../pages/Album";
+
 const AlbumData = {};
 
 const url = 'http://127.0.0.1:4100';
@@ -10,9 +12,23 @@ const header = {
   cache: 'default'
 }
 
+AlbumData.saveAlbum = (album) => {
+  header.method = 'POST';
+  headers = new Headers({ 'Content-Type': 'application/json' });
+  header.headers = headers;
+  header.body = JSON.stringify(album);
+  console.log(header.body);
+  return fetch(`${url}/create-album`, header);
+}
+
 AlbumData.loadAlbums = () => {
   header.method = 'GET';
   return fetch(`${url}/`, header);
+}
+
+AlbumData.findById = (albumid) => {
+  header.method = 'GET';
+  return fetch(`${url}/find/${albumid}`, header);
 }
 
 AlbumData.uploadPhoto = (fb) => {

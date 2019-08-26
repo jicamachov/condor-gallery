@@ -35,12 +35,6 @@ const Menu = props => {
         icon="inbox"
         onChangeTitle={props.onChangeTitle}
       />
-      <Item
-        link="/trash"
-        title="Trash"
-        icon="delete"
-        onChangeTitle={props.onChangeTitle}
-      />
     </nav>
   );
 };

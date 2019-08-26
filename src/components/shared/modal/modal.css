@@ -10,7 +10,7 @@
   .modal {
     display: block; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 4 !important; /* Sit on top */
+    z-index: 6 !important; /* Sit on top */
     padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;

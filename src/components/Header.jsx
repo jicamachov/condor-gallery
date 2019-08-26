@@ -63,8 +63,10 @@ const Header = props => {
         </div>
 
         <span className="image-upload m-10">
-        <AddIcon className={classes.icon} />
+          <Link to="/create-album">
+            <AddIcon className={classes.icon} />
             Create
+        </Link>
         </span>
 
         <span className="image-upload">
