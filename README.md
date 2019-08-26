@@ -14,9 +14,9 @@ Web app for Condor Labs (ET)
 ### Install API 
 
 #### Step 1.
-1. Instalar Nodejs v10.16.3
-3. Instalar Yarn (recommended) or used NPM (it included in NodeJS)
-3. Instalar Git
+1. Install Nodejs v10.16.3
+3. Install Yarn (recommended) or used NPM (it included in NodeJS)
+3. Install Git
 
 #### Step 2
 1. Download project in terminal with the command --> git clone https://github.com/jicamachov/condor-gallery.git
