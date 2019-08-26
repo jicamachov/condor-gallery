@@ -4,16 +4,22 @@ import { uid } from 'react-uid';
 import Grid from '@material-ui/core/Grid';
 
 import Image from './../Image';
+import { Container } from '@material-ui/core';
 
 const Album = (props) => {
 
     const data = props.data.filter(e => e._id === props.match.params.id);
     const element = data.map(record => {
         const item = record.photos.map(photo =>
-            <Grid key={photo._id} item xs={3}>
+            <Grid key={photo._id} item >
                 <Image
                     open={props.openImage}
+                    dataAlbum={props.data}
+                    handleClickOpenDialog={props.handleClickOpenDialog}
+                    handleAddPhotoToALbum={props.handleAddPhotoToALbum}
+                    openDialogAlbum={props.openDialogAlbum}
                     id={photo._id}
+                    photo= {{path: photo.path, caption: photo.caption, createdt: photo.createdt}}
                     albumid={record._id}
                     remove={props.remove}
                     caption={photo.caption}
@@ -25,7 +31,7 @@ const Album = (props) => {
         return (
             <div key={uid(record)}>
                 <h5 className="m-10"> { `Album /  ${record.name}`} </h5>
-                <Grid style={{ flexGrow: 1 }} container spacing={1}>
+                <Grid style={{ flexGrow: 1 }} container>
                     {item}
                 </Grid>
             </div>
@@ -33,9 +39,9 @@ const Album = (props) => {
     });
 
     return (
-        <div>
+        <Container maxWidth="lg">
             {element}
-        </div>
+        </Container>
     );
 }
 

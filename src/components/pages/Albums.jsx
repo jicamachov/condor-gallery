@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 
 
 import Image from '../Image';
+import { Container } from "@material-ui/core";
 
 
 const Albums = (props) => {
@@ -14,12 +15,12 @@ const Albums = (props) => {
   const element = props.data.map(record => {
     if (record.photos.length > 0) {
       return (
-        <Grid key={record._id} item xs={3}> 
+        <Grid key={record._id} item >
           <Link to={`/album/${record._id}`}>
-          <Image  
-            caption={`${record.name} (${record.photos.length})`} 
-            path={'http://127.0.0.1:4100/' + record.photos[0].path} 
-            /> 
+            <Image
+              caption={`${record.name} (${record.photos.length})`}
+              path={'http://127.0.0.1:4100/' + record.photos[0].path}
+            />
           </Link>
         </Grid>)
     }
@@ -27,9 +28,12 @@ const Albums = (props) => {
   });
 
   return (
-    <Grid style={{ flexGrow: 1 }} container spacing={1}>
-      {element}
-    </Grid>
+    <Container maxWidth="lg">
+       <h5 className="m-10"> { `Albums/`} </h5>
+      <Grid style={{ flexGrow: 1 }} container >
+        {element}
+      </Grid>
+    </Container>
   );
 }
 

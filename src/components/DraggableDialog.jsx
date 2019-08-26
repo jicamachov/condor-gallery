@@ -5,18 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Paper from '@material-ui/core/Paper';
-import Draggable from 'react-draggable';
 import Input from '@material-ui/core/Input';
-
-
-function PaperComponent(props) {
-    return (
-        <Draggable cancel={'[class*="MuiDialogContent-root"]'}>
-            <Paper {...props} />
-        </Draggable>
-    );
-}
 
 function DraggableDialog(props) {
    
@@ -27,6 +16,8 @@ function DraggableDialog(props) {
         text = <DialogContentText> <Input name="namePhoto" onChange={props.inputChange} /></DialogContentText>
     } else if(props.option === 'text') {
         text = <DialogContentText> { props.message} </DialogContentText>
+    }else if('selected') {
+        text = null
     }
 
     return (
@@ -34,7 +25,6 @@ function DraggableDialog(props) {
             <Dialog
                 open={props.showConfirm}
                 onClose={props.handleConfimClose}
-                PaperComponent={PaperComponent}
                 aria-labelledby="draggable-dialog-title"
             >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">

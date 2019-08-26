@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.primary,
     padding: '2px 4px',
     display: 'flex',
-    margin: theme.spacing(16),
+    margin: theme.spacing(10),
     alignItems: 'center',
     width: 700
   },
@@ -43,14 +43,12 @@ const Header = props => {
   return (
     <header className="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
       <div className="mdl-layout__header-row">
-        <span className="mdl-layout-title">{props.title}</span>
+        <span className="mdl-layout-title"> Condor Gallery </span>
 
-        <div className="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
           <Link to="/search"> <Paper className={classes.root}>
             <InputBase
               className={classes.input}
               placeholder="Search"
-              inputProps={{ 'aria-label': 'search google maps' }}
               onChange={props.search}
             />
             <IconButton className={classes.iconButton} aria-label="search">
@@ -60,7 +58,6 @@ const Header = props => {
 
           </Paper>
           </Link>
-        </div>
 
         <span className="image-upload m-10">
           <Link to="/create-album">

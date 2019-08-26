@@ -273,3 +273,13 @@ _:-ms-input-placeholder,
 margin:auto;
 
 }
+
+
+a:link {
+  text-decoration:none;
+}
+
+a {
+  color: #757575 !important;
+  font-weight: 400px !important;
+}

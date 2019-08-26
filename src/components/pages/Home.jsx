@@ -4,16 +4,22 @@ import { uid } from 'react-uid';
 import Grid from '@material-ui/core/Grid';
 
 import Image from './../Image';
+import { Container } from '@material-ui/core';
 
 const Home = (props) => {
 
     const element = props.data.map(record => {
 
         const item = record.photos.map(photo =>
-            <Grid key={photo._id} item xs={3}>
-                <Image 
+            <Grid key={photo._id} item >
+                <Image
+                    handleClickOpenDialog={props.handleClickOpenDialog}
+                    handleAddPhotoToALbum={props.handleAddPhotoToALbum}
+                    openDialogAlbum={props.openDialogAlbum}
+                    dataAlbum={props.dataAlbum}
                     open={props.openImage} 
                     id={photo._id}  
+                    photo= {{path: photo.path, caption: photo.caption, createdt: photo.createdt}}
                     albumid={photo.albumid} 
                     remove={props.remove} 
                     caption={photo.caption} 
@@ -32,9 +38,10 @@ const Home = (props) => {
         )
     });
     return (
-        <div>
+        <Container maxWidth="lg">
+             <h5 className="m-10"> { `Photos/`} </h5>
             {element}
-        </div>
+        </Container>
     );
 }
 

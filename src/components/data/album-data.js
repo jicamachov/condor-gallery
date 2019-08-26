@@ -1,5 +1,3 @@
-import Album from "../pages/Album";
-
 const AlbumData = {};
 
 const url = 'http://127.0.0.1:4100';
@@ -21,7 +19,18 @@ AlbumData.saveAlbum = (album) => {
   return fetch(`${url}/create-album`, header);
 }
 
+AlbumData.addPhotoToAlbum = (photo) => {
+  header.method = 'POST';
+  headers = new Headers({ 'Content-Type': 'application/json' });
+  header.headers = headers;
+  header.body = JSON.stringify(photo);
+  return fetch(`${url}/album/add-photo`, header);
+}
+
 AlbumData.loadAlbums = () => {
+  headers = new Headers();
+  header.headers = headers;
+  header.body = null;
   header.method = 'GET';
   return fetch(`${url}/`, header);
 }

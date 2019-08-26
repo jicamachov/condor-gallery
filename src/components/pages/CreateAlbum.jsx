@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -95,10 +95,8 @@ const CreateAlbum = (props) => {
         : null;
 
     return (
-
         <React.Fragment>
             {add}
-        
             <Container maxWidth="sm">
                 <FormControl fullWidth className={classes.margin}>
                 <InputLabel htmlFor="title-amount" className={classes.fontSize}>Add title</InputLabel>

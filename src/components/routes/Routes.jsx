@@ -15,13 +15,57 @@ const Routes = (props) => {
   const remove = props.removePhoto;
   const openImage = props.openImage;
   const addAlbum = props.addAlbum;
+  const openDialogAlbum = props.openDialogAlbum;
+  const handleClickOpenDialog = props.handleClickOpenDialog;
+  const handleAddPhotoToALbum = props.handleAddPhotoToALbum;
+
   return (
     <div>
-      <Route exact path="/" render={(props)=><Home {...props} data={data} remove={remove} openImage={openImage}/>} />
-      <Route path="/albums" render={ (props)=><Albums {...props} data={dataAlbum}/>} />
-      <Route path="/album/:id" render={ (props)=><Album {...props} data={dataAlbum} remove={remove} openImage={openImage} />} />
-      <Route path="/create-album" render={ (props)=><CreateAlbum {...props} data={data} openImage={openImage} addAlbum={addAlbum}/>} />
-      <Route path="/search" render={(props)=><Search {...props} data={dataSearch} remove={remove}/>} />
+      
+      <Route exact path="/" render={(props)=>
+        <Home
+         {...props} 
+         data={data}
+         dataAlbum={dataAlbum} 
+         remove={remove} 
+         openImage={openImage} 
+         openDialogAlbum={openDialogAlbum}
+         handleClickOpenDialog={handleClickOpenDialog}
+         handleAddPhotoToALbum={handleAddPhotoToALbum}
+         />
+         } />
+      
+      <Route path="/albums" render={ (props)=>
+        <Albums 
+          {...props} 
+          data={dataAlbum} 
+        />} />
+      
+      <Route path="/album/:id" render={ (props)=>
+        <Album {...props} 
+          data={dataAlbum} 
+          remove={remove} 
+          openImage={openImage} 
+          openDialogAlbum={openDialogAlbum}
+          handleClickOpenDialog={handleClickOpenDialog}
+          handleAddPhotoToALbum={handleAddPhotoToALbum}
+        />} />
+      
+      <Route path="/create-album" render={ (props)=>
+        <CreateAlbum 
+          {...props} 
+          data={data} 
+          openImage={openImage} 
+          addAlbum={addAlbum} 
+        />
+      } />
+      <Route path="/search" render={(props)=>
+        <Search 
+          {...props} 
+          data={dataSearch} 
+          remove={remove} 
+          />} 
+        />
     </div>
   );
 };

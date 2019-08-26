@@ -1,8 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
-import Snackbar from '@material-ui/core/Snackbar';
-
 import AlbumData from './data/album-data';
 
 import Routes from "./routes/Routes";
@@ -30,7 +28,8 @@ class App extends React.Component {
         id: null,
         path: null,
         caption: null
-      }
+      },
+      openDialogAlbum: false
     };
 
     this.handleOnChangeTitle = this.handleOnChangeTitle.bind(this);
@@ -46,6 +45,8 @@ class App extends React.Component {
     this.hanldeOnHiddenModal = this.hanldeOnHiddenModal.bind(this);
     this.handleOnAddAlbum = this.handleOnAddAlbum.bind(this);
     this.handleCloseNotification = this.handleCloseNotification.bind(this);
+    this.handleClickOpenDialog = this.handleClickOpenDialog.bind(this);
+    this.handleAddPhotoToALbum = this.handleAddPhotoToALbum.bind(this);
   }
 
   UNSAFE_componentWillMount() {
@@ -96,6 +97,9 @@ class App extends React.Component {
         const data = this.state.albums;
         data.push(record.data);
         this.setState({albums: data});
+        // setTimeout(function(){ alert("Hello"); }, 1000);
+        document.location.href = '/album/' + record.data._id
+
       })
       .catch(err => {
         console.log(err);
@@ -121,6 +125,27 @@ class App extends React.Component {
         this.setState({response: {show: true, message: `Error: ${err}`, color: 'red'} });
         console.log("Error: ", err);
       });
+  }
+
+  handleAddPhotoToALbum(values) {
+    this.setState({openDialogAlbum: false});
+    AlbumData
+      .addPhotoToAlbum(values)
+      .then(res => res.json())
+      .then(
+        record => {
+          console.log('Yeahhh');
+          this.handleLoadPhotos();
+        },
+        err => {
+          console.log('Error server', err);
+        }
+      )
+      .catch(err => {
+        console.log(err);
+      })
+    
+    console.log(values)
   }
 
   handleRemovePhoto(albumid, photoid) {
@@ -193,15 +218,13 @@ class App extends React.Component {
   }
 
 
-  handleOnShowModal(e) {
-    const dataset = e.target.dataset;
-
+  handleOnShowModal(value) {
     this.setState({
       imgShow: {
         show: true,
-        id: dataset.imgid,
-        path: dataset.imgpath,
-        caption: dataset.imgcaption
+        id: value.id,
+        path: value.path,
+        caption: value.caption
       }
     })
   }
@@ -220,6 +243,13 @@ class App extends React.Component {
   handleCloseNotification() {
 
   }
+
+  handleClickOpenDialog(value) {
+    console.log(value)
+    this.setState({ openDialogAlbum: value });
+  }
+
+  
 
   // <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header"> // menu fixed
   render() {
@@ -240,7 +270,11 @@ class App extends React.Component {
               removePhoto={this.handleRemovePhoto}
               openImage={this.handleOnShowModal}
               addAlbum={this.handleOnAddAlbum}
+              openDialogAlbum={this.state.openDialogAlbum}
+              handleClickOpenDialog={this.handleClickOpenDialog}
+              handleAddPhotoToALbum= {this.handleAddPhotoToALbum}
             />
+            
             <DraggableDialog
               showConfirm={this.state.showConfirm}
               confimClose={this.handleConfimClose}
@@ -254,8 +288,8 @@ class App extends React.Component {
               showConfirm={this.state.showConfirmRemovePhoto}
               confimClose={this.handleCancelRemovePotho}
               confirmAccept={this.handleRemovePhoto}
-              title="Confimación"
-              message="¿Desea Eliminar la imagen?"
+              title="Confimation"
+              message="Wish to delete this photo?"
               option="text"
               nameButtom="Accept"
             />
