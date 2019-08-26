@@ -1,4 +1,4 @@
-# condor-photos
+# condor-gallery
 Web app for Condor Labs (ET)
 
 ## Used technologies
