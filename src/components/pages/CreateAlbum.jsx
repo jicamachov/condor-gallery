@@ -64,7 +64,7 @@ const CreateAlbum = (props) => {
 
         const item = record.photos.map(photo =>
             <Grid key={photo._id} item xs={3}>
-                <Checkbox  onChange={handleCheck({_id: photo._id, path: photo.path, caption: photo.caption})}/>
+                <Checkbox  onChange={handleCheck({_id: photo._id, path: photo.path, caption: photo.caption, createdt: photo.createdt})}/>
                 <Image 
                     open={props.openImage} 
                     id={photo._id}  

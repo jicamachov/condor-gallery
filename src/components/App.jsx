@@ -96,7 +96,7 @@ class App extends React.Component {
         console.log(record)
         const data = this.state.albums;
         data.push(record.data);
-        this.setState({albums: data});
+        this.setState({ albums: data });
         // setTimeout(function(){ alert("Hello"); }, 1000);
         document.location.href = '/album/' + record.data._id
 
@@ -116,19 +116,26 @@ class App extends React.Component {
       .uploadPhoto(fd)
       .then(res => res.json())
       .then(record => {
-        const albums = this.state.albums;
-        const index = albums.findIndex((e) => e._id === record.data._id);
-        albums[index] = record.data;
-        this.setState({ albums });
+        const data = this.state.albums;
+        console.log('count', data.length)
+        if (data.length === 0) {
+          //data.push(record.data);
+          //this.setState({ albums: data });
+          this.handleLoadPhotos();
+        } else {
+          const index = data.findIndex((e) => e._id === record.data._id);
+          data[index] = record.data;
+          this.setState({ albums: data });
+        }
       })
       .catch(err => {
-        this.setState({response: {show: true, message: `Error: ${err}`, color: 'red'} });
+        this.setState({ response: { show: true, message: `Error: ${err}`, color: 'red' } });
         console.log("Error: ", err);
       });
   }
 
   handleAddPhotoToALbum(values) {
-    this.setState({openDialogAlbum: false});
+    this.setState({ openDialogAlbum: false });
     AlbumData
       .addPhotoToAlbum(values)
       .then(res => res.json())
@@ -144,7 +151,7 @@ class App extends React.Component {
       .catch(err => {
         console.log(err);
       })
-    
+
     console.log(values)
   }
 
@@ -206,15 +213,17 @@ class App extends React.Component {
     this.setState({ inputSearch: target.value });
   }
 
+  // Search 
   handleOnDataSearch(filter, albums) {
-    console.log(albums)
-    if (filter === '' || albums.length === 0) return [];
-    let data = [];
     const regex = new RegExp(filter, 'i');
-    albums.map(album => {
-      return data = album.photos.filter(q => (regex.test(q.caption) || regex.test(new Date(q.createdt).toLocaleDateString())));
-    });
-    return data;
+
+    if (albums.length === 0) return [];
+
+    albums = albums.filter(e => e.name === '__other');
+
+    if (filter === null || filter === '') return albums[0].photos;
+
+    return albums[0].photos.filter(q => (regex.test(q.caption) || regex.test(new Date(q.createdt).toLocaleDateString())));
   }
 
 
@@ -249,7 +258,7 @@ class App extends React.Component {
     this.setState({ openDialogAlbum: value });
   }
 
-  
+
 
   // <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header"> // menu fixed
   render() {
@@ -272,9 +281,9 @@ class App extends React.Component {
               addAlbum={this.handleOnAddAlbum}
               openDialogAlbum={this.state.openDialogAlbum}
               handleClickOpenDialog={this.handleClickOpenDialog}
-              handleAddPhotoToALbum= {this.handleAddPhotoToALbum}
+              handleAddPhotoToALbum={this.handleAddPhotoToALbum}
             />
-            
+
             <DraggableDialog
               showConfirm={this.state.showConfirm}
               confimClose={this.handleConfimClose}
