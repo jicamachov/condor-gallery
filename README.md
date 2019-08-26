@@ -5,8 +5,11 @@ Web app for Condor Labs (ET)
 
 1. (NodeJS)[https://nodejs.org/docs/latest-v9.x/api/]
 2. (create-react-app)[https://github.com/facebook/create-react-app]
-3. (Git)[https://git-scm.com/]
-4. (Yarn)[https://yarnpkg.com/en/]
+3. (React-router-dom)[https://reacttraining.com/react-router/web/guides/quick-start]
+4. (Material-ui)[https://material-ui.com/es/]
+5. (Template: getmdl)[https://getmdl.io/templates/index.html]
+6. (Git)[https://git-scm.com/]
+7. (Yarn)[https://yarnpkg.com/en/]
 
 ### Install API 
 
@@ -16,8 +19,8 @@ Web app for Condor Labs (ET)
 3. Instalar Git
 
 #### Step 2
-1. Download project, git clone https://github.com/jicamachov/condor-photos.git
-2. You go to root of the project
+1. Download project in terminal with the command --> git clone https://github.com/jicamachov/condor-gallery.git
+2. Go to root of the project
 3. Open terminal and excute yarn or npm i   --> (yarn cli)[https://yarnpkg.com/en/docs/cli/]
 
 #### Step 3
