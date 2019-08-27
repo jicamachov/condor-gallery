@@ -64,6 +64,7 @@ const Routes = (props) => {
           {...props} 
           data={dataSearch} 
           remove={remove} 
+          openImage={openImage} 
           />} 
         />
     </div>

@@ -6,7 +6,7 @@ const Search = (props) => {
 
   const element = props.data.map(photo =>
     <Grid key={photo._id} item xs={3}>
-      <Image id={photo._id} idAlbum={photo.albumid} remove={props.remove} caption={photo.caption} path={'http://127.0.0.1:4100/' + photo.path} />
+      <Image id={photo._id}  open={props.openImage}  idAlbum={photo.albumid} remove={props.remove} caption={photo.caption} path={'http://127.0.0.1:4100/' + photo.path} />
     </Grid>
   );
 
