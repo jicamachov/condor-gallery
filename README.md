@@ -11,7 +11,7 @@ Web app for Condor Labs (ET)
 6. (Git)[https://git-scm.com/]
 7. (Yarn)[https://yarnpkg.com/en/]
 
-### Install API 
+### Install Web app 
 
 #### Step 1.
 1. Install Nodejs v10.16.3
