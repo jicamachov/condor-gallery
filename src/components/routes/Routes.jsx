@@ -57,7 +57,8 @@ const Routes = (props) => {
           {...props} 
           data={data} 
           openImage={openImage} 
-          addAlbum={addAlbum} 
+          addAlbum={addAlbum}
+          remove={remove}  
         />
       } />
       <Route path="/search" render={(props)=>

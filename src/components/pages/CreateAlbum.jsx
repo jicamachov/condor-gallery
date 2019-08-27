@@ -67,6 +67,7 @@ const CreateAlbum = (props) => {
                 <Checkbox  onChange={handleCheck({_id: photo._id, path: photo.path, caption: photo.caption, createdt: photo.createdt})}/>
                 <Image 
                     open={props.openImage} 
+                    remove={props.remove}
                     id={photo._id}  
                     albumid={photo.albumid} 
                     caption={photo.caption} 
