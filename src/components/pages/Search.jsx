@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
-import Image from "../Image";
+import Image from "../shared/image/Image";
 
 const Search = (props) => {
 

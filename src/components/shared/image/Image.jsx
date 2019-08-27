@@ -9,7 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PhotoAlbumIcon from '@material-ui/icons/PhotoAlbum';
-import DialogAlbum from "./shared/dialog/DialogAlbum";
+import DialogAlbum from "../dialog/DialogAlbum";
 
 
 const StyledMenu = withStyles({

@@ -1,7 +1,7 @@
 import React from "react";
 import Menu from "./Menu";
 
-import logo from './../logo.png';
+import logo from './../../logo.png';
 
 const Sidebar = props => {
   return (
@@ -10,7 +10,7 @@ const Sidebar = props => {
        <img src={logo} alt="Logo" width="100px" height="100px" className="c-img"/>
        Condor Gallery
       </header>
-      <Menu onChangeTitle={props.onChangeTitle} />
+      <Menu />
     </div>
   );
 };

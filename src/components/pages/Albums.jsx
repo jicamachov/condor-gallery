@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 
 
-import Image from '../Image';
+import Image from '../shared/image/Image';
 import { Container } from "@material-ui/core";
 
 

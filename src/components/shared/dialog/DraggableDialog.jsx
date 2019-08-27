@@ -13,7 +13,7 @@ function DraggableDialog(props) {
     
     let text = '';
     if (props.option === 'input') {
-        text =<Input name="namePhoto" onChange={props.inputChange} />
+        text =<Input name="photoName" onChange={props.inputChange} />
     } else if(props.option === 'text') {
         text = <DialogContentText> { props.message} </DialogContentText>
     }else if('selected') {

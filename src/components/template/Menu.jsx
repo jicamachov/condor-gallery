@@ -6,7 +6,6 @@ const Item = props => {
     <Link
       className="mdl-navigation__link"
       to={props.link}
-      onClick={props.onChangeTitle}
       title={props.title}
     >
       <i
@@ -27,13 +26,11 @@ const Menu = props => {
         link="/"
         title="Photos"
         icon="home"
-        onChangeTitle={props.onChangeTitle}
       />
       <Item
         link="/albums"
         title="Albums"
         icon="inbox"
-        onChangeTitle={props.onChangeTitle}
       />
     </nav>
   );

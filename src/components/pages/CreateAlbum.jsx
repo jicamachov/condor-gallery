@@ -10,7 +10,7 @@ import { Checkbox } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
-import Image from '../Image';
+import Image from '../shared/image/Image';
 import { uid } from 'react-uid';
 
 const useStyles = makeStyles(theme => ({

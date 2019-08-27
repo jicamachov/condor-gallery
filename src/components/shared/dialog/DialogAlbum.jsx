@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
     album: ''
   });
     let options = null;
-    console.log('This is my data', props.dataAlbum);
     if(props.dataAlbum){
         options = props.dataAlbum.map(e => 
             (e.name !== '__other') 
@@ -52,7 +51,7 @@ const useStyles = makeStyles(theme => ({
         <DialogContent>
           <form className={classes.container}>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="age-native-simple">Chosse a album</InputLabel>
+              <InputLabel htmlFor="age-native-simple">Choose a album</InputLabel>
               <Select
                 native
                 value={state.album}
