@@ -39,6 +39,7 @@ const Routes = (props) => {
         <Albums 
           {...props} 
           data={dataAlbum} 
+          openImage={openImage} 
         />} />
       
       <Route path="/album/:id" render={ (props)=>

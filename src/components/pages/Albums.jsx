@@ -20,6 +20,7 @@ const Albums = (props) => {
             <Image
               caption={`${record.name} (${record.photos.length})`}
               path={'http://127.0.0.1:4100/' + record.photos[0].path}
+              open={props.openImage}
             />
           </Link>
         </Grid>)
