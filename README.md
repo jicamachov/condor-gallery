@@ -24,6 +24,6 @@ Web app for Condor Labs (ET)
 3. Open terminal and excute yarn or npm i   --> (yarn cli)[https://yarnpkg.com/en/docs/cli/]
 
 #### Step 3
-1. Excecute yarn start or npm start
+1. Execute yarn start or npm start
 
 
