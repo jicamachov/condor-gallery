@@ -19,7 +19,7 @@ Web app for Condor Labs (ET)
 3. Install Git
 
 #### Step 2
-1. Download project in terminal with the command --> git clone https://github.com/jicamachov/condor-gallery.git
+1. Download the project in a terminal with next command --> git clone https://github.com/jicamachov/condor-gallery.git
 2. Go to root of the project
 3. Open terminal and excute yarn or npm i   --> (yarn cli)[https://yarnpkg.com/en/docs/cli/]
 
