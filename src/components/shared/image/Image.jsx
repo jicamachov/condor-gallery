@@ -1,50 +1,48 @@
 import React from "react";
 
-import SettingsOverscanIcon from '@material-ui/icons/SettingsOverscan';
-import { withStyles } from '@material-ui/core/styles';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import DeleteIcon from '@material-ui/icons/Delete';
-import PhotoAlbumIcon from '@material-ui/icons/PhotoAlbum';
+import SettingsOverscanIcon from "@material-ui/icons/SettingsOverscan";
+import { withStyles } from "@material-ui/core/styles";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import DeleteIcon from "@material-ui/icons/Delete";
+import PhotoAlbumIcon from "@material-ui/icons/PhotoAlbum";
 import DialogAlbum from "../dialog/DialogAlbum";
-
 
 const StyledMenu = withStyles({
   paper: {
-    border: '1px solid #d3d4d5',
-  },
+    border: "1px solid #d3d4d5"
+  }
 })(props => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
     anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
+      vertical: "bottom",
+      horizontal: "center"
     }}
     transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
+      vertical: "top",
+      horizontal: "center"
     }}
     {...props}
   />
 ));
 
-
 const StyledMenuItem = withStyles(theme => ({
   root: {
-    '&:focus': {
+    "&:focus": {
       backgroundColor: theme.palette.primary.main,
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white,
-      },
-    },
-  },
+      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+        color: theme.palette.common.white
+      }
+    }
+  }
 }))(MenuItem);
 
-const Image = (props) => {
+const Image = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(event) {
@@ -55,6 +53,24 @@ const Image = (props) => {
     setAnchorEl(null);
   }
 
+  const optionAlbum = props.albumshow ? (
+    <StyledMenuItem>
+      <ListItemIcon>
+        <PhotoAlbumIcon />
+      </ListItemIcon>
+      <ListItemText
+        primary="Album"
+        onClick={() => props.handleClickOpenDialog(true)}
+      />
+      <DialogAlbum
+        photo={props.photo}
+        dataAlbum={props.dataAlbum}
+        openDialogAlbum={props.openDialogAlbum}
+        handleClickOpenDialog={props.handleClickOpenDialog}
+        handleAddPhotoToALbum={props.handleAddPhotoToALbum}
+      />
+    </StyledMenuItem>
+  ) : null;
 
   return (
     <div
@@ -90,35 +106,23 @@ const Image = (props) => {
             <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>
-            <ListItemText
-              primary="Delete"
-            />
+            <ListItemText primary="Delete" />
           </StyledMenuItem>
-          <StyledMenuItem>
-            <ListItemIcon>
-              <PhotoAlbumIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Album"
-              onClick={() => props.handleClickOpenDialog(true)}
-            />
-            <DialogAlbum 
-              photo={props.photo}
-              dataAlbum={props.dataAlbum}
-              openDialogAlbum={props.openDialogAlbum}
-              handleClickOpenDialog= {props.handleClickOpenDialog}
-              handleAddPhotoToALbum= {props.handleAddPhotoToALbum}
-            />
-
-          </StyledMenuItem>
+          {optionAlbum}
         </StyledMenu>
       </div>
-      <div className="mdl-card__actions image-bottom" >
+      <div className="mdl-card__actions image-bottom">
         <span className="demo-card-image__filename">{props.caption}</span>
         <SettingsOverscanIcon
           className="p-rigth mr-10"
           fontSize="large"
-          onClick={ () => props.open({id: props.id, path: props.path, caption: props.caption})}
+          onClick={() =>
+            props.open({
+              id: props.id,
+              path: props.path,
+              caption: props.caption
+            })
+          }
           id={props.id}
         />
       </div>

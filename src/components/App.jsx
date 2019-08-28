@@ -218,6 +218,8 @@ class App extends React.Component {
 
     albums = albums.filter(e => e.name === '__other');
 
+    if(!albums[0]) return [];
+    
     if (filter === null || filter === '') return albums[0].photos;
 
     return albums[0].photos.filter(q => (regex.test(q.caption) || regex.test(new Date(q.createdt).toLocaleDateString())));

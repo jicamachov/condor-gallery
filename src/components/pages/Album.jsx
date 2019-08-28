@@ -18,6 +18,7 @@ const Album = (props) => {
                     handleClickOpenDialog={props.handleClickOpenDialog}
                     handleAddPhotoToALbum={props.handleAddPhotoToALbum}
                     openDialogAlbum={props.openDialogAlbum}
+                    albumshow={true}
                     id={photo._id}
                     photo= {{path: photo.path, caption: photo.caption, createdt: photo.createdt}}
                     albumid={record._id}

@@ -71,6 +71,7 @@ const CreateAlbum = (props) => {
                     id={photo._id}  
                     albumid={photo.albumid} 
                     caption={photo.caption} 
+                    albumshow={false}
                     path={'http://127.0.0.1:4100/' + photo.path} 
                 />
             </Grid>

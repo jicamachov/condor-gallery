@@ -17,6 +17,7 @@ const Home = (props) => {
                     handleAddPhotoToALbum={props.handleAddPhotoToALbum}
                     openDialogAlbum={props.openDialogAlbum}
                     dataAlbum={props.dataAlbum}
+                    albumshow={true}
                     open={props.openImage} 
                     id={photo._id}  
                     photo= {{path: photo.path, caption: photo.caption, createdt: photo.createdt}}

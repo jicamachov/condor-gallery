@@ -65,6 +65,10 @@ const Routes = (props) => {
         <Search 
           {...props} 
           data={dataSearch} 
+          openDialogAlbum={openDialogAlbum}
+          handleClickOpenDialog={handleClickOpenDialog}
+          handleAddPhotoToALbum={handleAddPhotoToALbum}
+          dataAlbum={dataAlbum} 
           remove={remove} 
           openImage={openImage} 
           />} 
