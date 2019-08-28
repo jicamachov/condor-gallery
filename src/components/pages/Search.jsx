@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Container } from "@material-ui/core";
 import Image from "../shared/image/Image";
 
 const Search = (props) => {
@@ -20,12 +20,12 @@ const Search = (props) => {
   );
 
   return (
-    <div >
+     <Container maxWidth="lg">
     <h5 className="m-10"> { `Search/`} </h5>
     <Grid style={{ flexGrow: 1 }} container spacing={1}>
       {element}
     </Grid>
-    </div>
+    </Container>
     
   );
 }
